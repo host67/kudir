@@ -16,7 +16,7 @@
     Например:
 ```
       DB_CONNECTION=mysql
-      DB_HOST=MySQL-8.0
+      DB_HOST=localhost
       DB_PORT=3306
       DB_DATABASE=kudir
       DB_USERNAME=root
