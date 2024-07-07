@@ -27,7 +27,7 @@ class UserCreateFormRequest extends FormRequest
             'password' => 'required|confirmed|min:7|max:30', //add an attribute of name="password_confirmation" to the Confirm Password text input box
         ];
     }
-    public function messages()
+    public function messages(): array
     {
         return [
             'name.required' => 'Поле Имя обязательно для заполнения',
@@ -40,7 +40,7 @@ class UserCreateFormRequest extends FormRequest
         ];
     }
 
-    public function attributes()
+    public function attributes(): array
     {
         return [
             'name' => 'Имя',
