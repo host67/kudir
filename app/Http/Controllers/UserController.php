@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Http\Requests\UserCreateFormRequest;
 
 class UserController extends Controller
 {
@@ -13,13 +14,19 @@ class UserController extends Controller
         dd($users);
     }
 
-    public function create()
+    public function create(UserCreateFormRequest $request)
     {
-        echo 'create';
+        $validated = $request->validated();
+        $user = User::create($validated);
+        return response()->json([
+            'message' => 'Пользователь успешно создан',
+            'data' => $user,
+        ]);
     }
 
     public function store()
     {
+
         echo 'store';
     }
 
