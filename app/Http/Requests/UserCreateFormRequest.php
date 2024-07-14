@@ -30,22 +30,22 @@ class UserCreateFormRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => 'Поле Имя обязательно для заполнения',
-            'email.required' => 'Поле Email обязательно для заполнения',
-            'email.email' => 'Поле Email должно быть корректным email-адресом',
-            'password.required' => 'Поле Пароль обязательно для заполнения',
-            'password.confirmed' => 'Пароли не совпадают',
-            'password.min' => 'Длина поля Пароль должна быть не менее 7 символов',
-            'password.max' => 'Длина поля Пароль не должна превышать 50 символов',
+            'name.required' => 'Name is required',
+            'email.required' => 'Email is required',
+            'email.email' => 'Email is not correct',
+            'password.required' => 'Password is required',
+            'password.confirmed' => 'Passwords not confirmed',
+            'password.min' => 'The minimum password length must be 7 characters',
+            'password.max' => 'The maximum password length should not exceed 7 characters',
         ];
     }
 
     public function attributes(): array
     {
         return [
-            'name' => 'Имя',
+            'name' => 'Name',
             'email' => 'Email',
-            'password' => 'Пароль',
+            'password' => 'Password',
         ];
     }
 }
