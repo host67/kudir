@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Requests\UserCreateFormRequest;
+use \App\Http\Requests\UserUpdateFormRequest;
 
 class UserController extends Controller
 {
@@ -34,17 +35,18 @@ class UserController extends Controller
         echo 'store';
     }
 
-    public function edit($id)
+    public function edit(int $id)
     {
         echo 'edit';
     }
 
-    public function update(Request $request, $id)
+    public function update(UserUpdateFormRequest $request, int $id)
     {
+        //dd($request);
         echo 'update';
     }
 
-    public function destroy($id)
+    public function destroy(int $id)
     {
         $user = User::findOrFail($id);
 
@@ -53,7 +55,7 @@ class UserController extends Controller
 
             return response()->json([
                 'message' => "User {$user->id} successfully deleted",
-            ], 200);
+            ], 204);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => "Error when deleting user {$user->id}",

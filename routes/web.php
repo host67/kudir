@@ -11,9 +11,9 @@ Route::get('/', function () {
 Route::get('users', [UserController::class, 'index']);
 Route::post('users/create', [UserController::class, 'create']);
 Route::post('users', [UserController::class, 'store']);
-Route::get('users/{id}/edit', [UserController::class, 'edit']);
-Route::put('users/{id}', [UserController::class, 'update']);
-Route::delete('users/{id}', [UserController::class, 'destroy']);
+Route::post('users/{id:digit}/edit', [UserController::class, 'edit']);
+Route::put('users/{id:digit}', [UserController::class, 'update']);
+Route::delete('users/{id:digit}', [UserController::class, 'destroy']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
