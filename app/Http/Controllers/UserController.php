@@ -42,7 +42,6 @@ class UserController extends Controller
 
     public function update(UserUpdateFormRequest $request, int $id)
     {
-        dd($request);
         echo 'update';
     }
 
