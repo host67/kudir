@@ -6,9 +6,17 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Requests\UserCreateFormRequest;
 use \App\Http\Requests\UserUpdateFormRequest;
+use App\Services\UserService;
+use App\Dto\UserCreateDTO;
 
 class UserController extends Controller
 {
+    protected $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
     public function index()
     {
         $users = User::all();
@@ -19,15 +27,14 @@ class UserController extends Controller
     public function create(UserCreateFormRequest $request)
     {
         $validated = $request->validated();
-        $user = User::create($validated);
+
+        $userDTO = UserCreateDTO::fromArray($validated);
+
+        $user = $this->userService->createUser($userDTO);
 
         $user->save();
 
-        return response()->json([
-            'message'   => 'User successfully created',
-            'data'      => $user,
-            'validated' => $validated,
-        ]);
+        return redirect()->route('users.index')->with('success', 'Пользователь создан');
     }
 
     public function store()
