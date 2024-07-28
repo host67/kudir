@@ -2,21 +2,12 @@
 
 namespace App\Dto;
 
-class UserCreateDTO
+final readonly class UserCreateDTO
 {
     public function __construct(
-        public readonly string $name,
-        public readonly string $email,
-        public readonly string $password,
+        public string $name,
+        public string $email,
+        public string $password,
     ) {
-    }
-
-    public static function fromArray(array $data): self
-    {
-        return new self(
-            name: $data['name'],
-            email: $data['email'],
-            password: $data['password']
-        );
     }
 }

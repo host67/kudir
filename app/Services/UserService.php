@@ -8,15 +8,18 @@ use App\Dto\UserCreateDTO;
 class UserService
 {
     /**
-     * Create a new class instance.
+     * Create and save a new User
      */
-    public function createUser(UserCreateDTO $userData)
+    public function createUser(UserCreateDTO $userData): User
     {
-        // Создание пользователя с использованием данных из DTO
-        return User::create([
+        $user = new User([
             'name' => $userData->name,
             'email' => $userData->email,
-            'password' => bcrypt($userData->password), // Не забудьте хэшировать пароль
+            'password' => bcrypt($userData->password),
         ]);
+
+        $user->save();
+
+        return $user;
     }
 }

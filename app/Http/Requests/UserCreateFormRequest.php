@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Dto\UserCreateDTO;
 
 class UserCreateFormRequest extends FormRequest
 {
@@ -17,7 +18,7 @@ class UserCreateFormRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array
      */
     public function rules(): array
     {
@@ -47,5 +48,22 @@ class UserCreateFormRequest extends FormRequest
             'email' => 'Email',
             'password' => 'Password',
         ];
+    }
+
+
+    /**
+     * Create a UserCreateDTO from validated data.
+     *
+     * @return UserCreateDTO
+     */
+    public function getUserCreateDTO(): UserCreateDTO
+    {
+        $validated = $this->validated();
+
+        return new UserCreateDTO(
+            name: $validated['name'],
+            email: $validated['email'],
+            password: $validated['password']
+        );
     }
 }

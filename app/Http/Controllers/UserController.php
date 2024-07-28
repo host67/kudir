@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Requests\UserCreateFormRequest;
 use \App\Http\Requests\UserUpdateFormRequest;
 use App\Services\UserService;
-use App\Dto\UserCreateDTO;
 
 class UserController extends Controller
 {
@@ -26,13 +24,9 @@ class UserController extends Controller
 
     public function create(UserCreateFormRequest $request)
     {
-        $validated = $request->validated();
-
-        $userDTO = UserCreateDTO::fromArray($validated);
+        $userDTO = $request->getUserCreateDTO();
 
         $user = $this->userService->createUser($userDTO);
-
-        $user->save();
 
         return redirect()->route('users.index')->with('success', 'Пользователь создан');
     }
