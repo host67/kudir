@@ -24,11 +24,16 @@ class UserController extends Controller
 
     public function create(UserCreateFormRequest $request)
     {
-        $userDTO = $request->getUserCreateDTO();
+        try {
+            $userDTO = $request->getUserCreateDTO();
 
-        $user = $this->userService->createUser($userDTO);
+            $user = $this->userService->createUser($userDTO);
 
-        return redirect()->route('users.index')->with('success', 'Пользователь создан');
+            return redirect()->route('users.index')->with('success', 'Пользователь создан');
+
+        } catch (\Exception $e) {
+            return redirect()->route('users.index')->with('error', 'Пользователь не создан');
+        }
     }
 
     public function store()
