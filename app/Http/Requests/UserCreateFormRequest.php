@@ -24,7 +24,7 @@ class UserCreateFormRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users,email',
             'password' => 'required|confirmed|min:7|max:30', //add an attribute of name="password_confirmation" to the Confirm Password text input box
         ];
     }
@@ -34,6 +34,7 @@ class UserCreateFormRequest extends FormRequest
             'name.required' => 'Name is required',
             'email.required' => 'Email is required',
             'email.email' => 'Email is not correct',
+            'email.unique' => 'Email already exists',
             'password.required' => 'Password is required',
             'password.confirmed' => 'Passwords not confirmed',
             'password.min' => 'The minimum password length must be 7 characters',

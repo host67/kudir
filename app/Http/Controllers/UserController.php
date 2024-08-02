@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Http\Requests\UserCreateFormRequest;
-use \App\Http\Requests\UserUpdateFormRequest;
+use App\Http\Requests\UserUpdateFormRequest;
 use App\Services\UserService;
+use Exception;
 
 class UserController extends Controller
 {
-    protected $userService;
+    protected UserService $userService;
 
     public function __construct(UserService $userService)
     {
@@ -31,8 +32,13 @@ class UserController extends Controller
 
             return redirect()->route('users.index')->with('success', 'Пользователь создан');
 
-        } catch (\Exception $e) {
-            return redirect()->route('users.index')->with('error', 'Пользователь не создан');
+        } catch (Exception $e) {
+
+            if ($e->getCode() == 409) {
+                return response()->json(['error' => $e->getMessage()], 409);
+            } else {
+                return response()->json(['error' => 'Произошла ошибка при регистрации'], 500);
+            }
         }
     }
 
@@ -59,11 +65,11 @@ class UserController extends Controller
             $user->delete();
 
             return response()->json([
-                'message' => "User {$user->id} successfully deleted",
+                'message' => "User $user->id successfully deleted",
             ], 204);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json([
-                'message' => "Error when deleting user {$user->id}",
+                'message' => "Error when deleting user $user->id",
                 'error' => $e->getMessage(),
             ], 500);
         }

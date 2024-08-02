@@ -29,7 +29,7 @@ class UserService
 
             return $user;
         } catch (\Exception $e) {
-            throw new \Exception("Ошибка при создании пользователя. " . $e->getMessage(), 403, $e);
+            throw new \Exception("Пользователь с таким email уже существует" . $e->getMessage(), 409, $e);
         }
     }
 
