@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Dto\UserCreateDTO;
+use App\Dto\UserDeleteDTO;
 
 class UserService
 {
@@ -12,39 +13,30 @@ class UserService
      *
      * @param UserCreateDTO $userData
      * @return User
-     * @throws \Exception
      */
     public function createUser(UserCreateDTO $userData): User
     {
-        try {
-            $this->checkIfUserExists($userData->email);
+        $user = new User([
+            'name' => $userData->name,
+            'email' => $userData->email,
+            'password' => bcrypt($userData->password),
+        ]);
 
-            $user = new User([
-                'name' => $userData->name,
-                'email' => $userData->email,
-                'password' => bcrypt($userData->password),
-            ]);
+        $user->save();
 
-            $user->save();
-
-            return $user;
-        } catch (\Exception $e) {
-            throw new \Exception("Пользователь с таким email уже существует" . $e->getMessage(), 409, $e);
-        }
+        return $user;
     }
 
     /**
-     * Checks the existence of a user by email
+     * Delete User
      *
-     * @param string $email
-     * @throws \Exception if user exists
+     * @param UserDeleteDTO $id
+     * @return bool
      */
-    private function checkIfUserExists(string $email): void
+    public function deleteUser(UserDeleteDTO $id): bool
     {
-        $exists = User::where('email', $email)->exists();
+        $user = User::findOrFail($id);
 
-        if ($exists) {
-            throw new \Exception("Пользователь с таким email уже существует.");
-        }
+        return $user->delete();
     }
 }

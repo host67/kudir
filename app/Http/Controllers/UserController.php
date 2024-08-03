@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Services\UserService;
 use App\Http\Requests\UserCreateFormRequest;
 use App\Http\Requests\UserUpdateFormRequest;
-use App\Services\UserService;
-use Exception;
+use App\Http\Requests\UserDeleteFormRequest;
+use Illuminate\Http\RedirectResponse;
 
 class UserController extends Controller
 {
@@ -23,23 +24,18 @@ class UserController extends Controller
         //dd($users);
     }
 
-    public function create(UserCreateFormRequest $request)
+    /**
+     * Create User
+     * @param UserCreateFormRequest $request
+     * @return RedirectResponse
+     */
+    public function create(UserCreateFormRequest $request): RedirectResponse
     {
-        try {
-            $userDTO = $request->getUserCreateDTO();
+        $userDTO = $request->getUserCreateDTO();
 
-            $user = $this->userService->createUser($userDTO);
+        $user = $this->userService->createUser($userDTO);
 
-            return redirect()->route('users.index')->with('success', 'Пользователь создан');
-
-        } catch (Exception $e) {
-
-            if ($e->getCode() == 409) {
-                return response()->json(['error' => $e->getMessage()], 409);
-            } else {
-                return response()->json(['error' => 'Произошла ошибка при регистрации'], 500);
-            }
-        }
+        return redirect()->route('users.index')->with('success', 'Пользователь создан');
     }
 
     public function store()
@@ -57,21 +53,20 @@ class UserController extends Controller
         echo 'update';
     }
 
-    public function destroy(int $id)
+    /**
+     * Delete User
+     * @param UserDeleteFormRequest $request
+     * @return RedirectResponse
+     */
+    public function destroy(UserDeleteFormRequest $request): RedirectResponse
     {
-        $user = User::findOrFail($id);
+        $userDTO = $request->getUserDeleteDTO();
 
-        try {
-            $user->delete();
+        $result = $this->userService->deleteUser($userDTO);
 
-            return response()->json([
-                'message' => "User $user->id successfully deleted",
-            ], 204);
-        } catch (Exception $e) {
-            return response()->json([
-                'message' => "Error when deleting user $user->id",
-                'error' => $e->getMessage(),
-            ], 500);
+        if (!$result) {
+            return redirect()->route('users.index')->with('error', 'Ошибка удаления пользователя');
         }
-    }
+        return redirect()->route('users.index')->with('success', 'Пользователь удалён');
+     }
 }
